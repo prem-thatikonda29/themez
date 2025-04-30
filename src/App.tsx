@@ -1,11 +1,7 @@
-import React from 'react'
+import Saas from "./previews/Saas";
 
 const App = () => {
-  return (
-    <div>
-      <h1>App</h1>
-    </div>
-  )
-}
+  return <Saas />;
+};
 
-export default App
+export default App;
