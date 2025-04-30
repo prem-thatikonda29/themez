@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Palette } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Hero = () => {
   return (
@@ -110,12 +111,68 @@ const Features = () => {
   );
 };
 
-function Saas() {
+interface ThemeSwitcherProps {
+  currentTheme: Theme;
+  onThemeChange: (theme: Theme) => void;
+}
+
+const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
+  const themes: Theme[] = ["default", "purple", "green", "blue"];
+
   return (
-    <section className="min-h-screen">
-      <Hero />
-      <Testimonials />
-      <Features />
+    <div className="fixed top-4 right-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 border border-border">
+      <div className="flex items-center gap-2">
+        <Palette className="h-4 w-4" />
+        {themes.map((theme) => (
+          <Button
+            key={theme}
+            variant={currentTheme === theme ? "default" : "outline"}
+            size="sm"
+            onClick={() => onThemeChange(theme)}
+            className="capitalize"
+          >
+            {theme}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+type Theme = "default" | "purple" | "green" | "blue";
+
+function Saas() {
+  const [theme, setTheme] = useState<Theme>("default");
+
+  const handleThemeChange = (newTheme: Theme) => {
+    setTheme(newTheme);
+    // Remove any existing theme classes
+    document.documentElement.classList.remove(
+      "theme-purple",
+      "theme-green",
+      "theme-blue"
+    );
+
+    // Add the new theme class if it's not default
+    if (newTheme !== "default") {
+      document.documentElement.classList.add(`theme-${newTheme}`);
+    }
+  };
+
+  // Initialize theme on component mount
+  useEffect(() => {
+    handleThemeChange(theme);
+  }, []);
+
+  return (
+    <section className="min-h-screen flex w-full">
+      <ThemeSwitcher currentTheme={theme} onThemeChange={handleThemeChange} />
+      <div className="w-48 bg-green-100 min-h-screen"></div>
+      <div>
+        <Hero />
+        <Testimonials />
+        <Features />
+      </div>
     </section>
   );
 }
