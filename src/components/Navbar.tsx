@@ -1,0 +1,61 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { type Theme } from "./ThemeSidebar";
+
+type PreviewType = "saas" | "portfolio" | "e-commerce";
+
+interface NavbarProps {
+  activePreview: PreviewType;
+  setActivePreview: (value: PreviewType) => void;
+  theme: Theme;
+  onExportCSS: () => void;
+  onExportJSON: () => void;
+}
+
+export const Navbar = ({
+  activePreview,
+  setActivePreview,
+  theme,
+  onExportCSS,
+  onExportJSON,
+}: NavbarProps) => {
+  return (
+    <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center justify-between">
+        <div className="flex items-center gap-4">
+          <h2 className="text-lg font-semibold">Themez</h2>
+          <Select
+            value={activePreview}
+            onValueChange={(value: PreviewType) => setActivePreview(value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select preview" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="saas">SaaS Template</SelectItem>
+              <SelectItem value="portfolio">Portfolio Template</SelectItem>
+              <SelectItem value="e-commerce">E-commerce Template</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={onExportCSS}>
+            <Download className="h-4 w-4 mr-2" />
+            Export CSS
+          </Button>
+          <Button variant="outline" size="sm" onClick={onExportJSON}>
+            <Download className="h-4 w-4 mr-2" />
+            Export JSON
+          </Button>
+        </div>
+      </div>
+    </nav>
+  );
+};

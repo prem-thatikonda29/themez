@@ -141,33 +141,13 @@ const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
 
 type Theme = "default" | "purple" | "green" | "blue";
 
-function Saas() {
-  const [theme, setTheme] = useState<Theme>("default");
+interface SaasProps {
+  theme: Theme;
+}
 
-  const handleThemeChange = (newTheme: Theme) => {
-    setTheme(newTheme);
-    // Remove any existing theme classes
-    document.documentElement.classList.remove(
-      "theme-purple",
-      "theme-green",
-      "theme-blue"
-    );
-
-    // Add the new theme class if it's not default
-    if (newTheme !== "default") {
-      document.documentElement.classList.add(`theme-${newTheme}`);
-    }
-  };
-
-  // Initialize theme on component mount
-  useEffect(() => {
-    handleThemeChange(theme);
-  }, []);
-
+function Saas({ theme }: SaasProps) {
   return (
-    <section className="min-h-screen flex w-full">
-      <ThemeSwitcher currentTheme={theme} onThemeChange={handleThemeChange} />
-      <div className="w-48 bg-green-100 min-h-screen"></div>
+    <section className="min-h-screen w-full">
       <div>
         <Hero />
         <Testimonials />
