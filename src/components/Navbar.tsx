@@ -10,26 +10,20 @@ import { Button } from "@/components/ui/button";
 import { type Theme } from "./ThemeSidebar";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
+type ExportFormat = "css" | "json" | "tailwind" | "tailwind4";
 
 interface NavbarProps {
   activePreview: PreviewType;
   setActivePreview: (value: PreviewType) => void;
   theme: Theme;
-  onExportCSS: () => void;
-  onExportJSON: () => void;
-  onExportTailwind: () => void;
-  onExportTailwind4: () => void; // Add this new prop
+  onExport: (format: ExportFormat) => void;
   onToggleSidebar: () => void;
 }
 
 export const Navbar = ({
   activePreview,
   setActivePreview,
-  theme,
-  onExportCSS,
-  onExportJSON,
-  onExportTailwind,
-  onExportTailwind4, // Add this to destructuring
+  onExport,
   onToggleSidebar,
 }: NavbarProps) => {
   return (
@@ -55,21 +49,9 @@ export const Navbar = ({
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onExportCSS}>
+          <Button variant="outline" size="sm" onClick={() => onExport("css")}>
             <Download className="h-4 w-4 mr-2" />
-            Preview CSS
-          </Button>
-          <Button variant="outline" size="sm" onClick={onExportJSON}>
-            <Download className="h-4 w-4 mr-2" />
-            Preview JSON
-          </Button>
-          <Button variant="outline" size="sm" onClick={onExportTailwind}>
-            <Download className="h-4 w-4 mr-2" />
-            Preview Tailwind v3
-          </Button>
-          <Button variant="outline" size="sm" onClick={onExportTailwind4}>
-            <Download className="h-4 w-4 mr-2" />
-            Preview Tailwind v4
+            Preview Theme
           </Button>
         </div>
       </div>

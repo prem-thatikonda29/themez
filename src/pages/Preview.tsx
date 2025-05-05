@@ -3,8 +3,15 @@ import { ThemeSidebar, type Theme } from "@/components/ThemeSidebar";
 import Saas from "../previews/Saas";
 import { Navbar } from "@/components/Navbar";
 import { themeConfigs } from "@/lib/theme-config";
-import { Button } from "@/components/ui/button"; // Add this import
-import { Download } from "lucide-react"; // Add this import for the Download icon
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 
@@ -14,6 +21,8 @@ const Preview = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [previewCode, setPreviewCode] = useState<string>("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  // Add this with other state declarations
+  const [previewFormat, setPreviewFormat] = useState<ExportFormat>("css");
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
@@ -181,6 +190,23 @@ module.exports = {
     URL.revokeObjectURL(url);
   };
 
+  const handleExport = (format: ExportFormat) => {
+    switch (format) {
+      case "css":
+        handleExportCSS();
+        break;
+      case "json":
+        handleExportJSON();
+        break;
+      case "tailwind":
+        handleExportTailwind();
+        break;
+      case "tailwind4":
+        handleExportTailwind4();
+        break;
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed top-0 left-0 right-0 z-50">
@@ -188,10 +214,7 @@ module.exports = {
           activePreview={activePreview}
           setActivePreview={setActivePreview}
           theme={theme}
-          onExportCSS={handleExportCSS}
-          onExportJSON={handleExportJSON}
-          onExportTailwind={handleExportTailwind}
-          onExportTailwind4={handleExportTailwind4}
+          onExport={handleExport}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
       </div>
@@ -225,8 +248,23 @@ module.exports = {
           />
           <div className="fixed top-[3.5rem] right-8 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium">Code Preview</h3>
               <div className="flex items-center gap-2">
+                <Select
+                  value={previewFormat}
+                  onValueChange={(value: ExportFormat) => {
+                    handleExport(value);
+                  }}
+                >
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Select format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="css">CSS Variables</SelectItem>
+                    <SelectItem value="json">JSON</SelectItem>
+                    <SelectItem value="tailwind">Tailwind v3</SelectItem>
+                    <SelectItem value="tailwind4">Tailwind v4</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button variant="outline" size="sm" onClick={handleDownload}>
                   <Download className="h-4 w-4 mr-2" />
                   Download
