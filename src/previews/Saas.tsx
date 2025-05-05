@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Palette } from "lucide-react";
-import { useState, useEffect } from "react";
 
 const Hero = () => {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-primary">
             Transform Your Business with Our SaaS Solution
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
@@ -48,14 +47,17 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-24 px-24">
+    <section className="py-24 px-6 md:px-24 bg-background text-foreground">
       <div className="container">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="text-3xl font-bold text-center mb-12 text-primary">
           What Our Customers Say
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial) => (
-            <Card key={testimonial.author} className="p-6">
+            <Card
+              key={testimonial.author}
+              className="p-6 bg-card text-card-foreground border border-border"
+            >
               <blockquote className="text-lg mb-4">
                 {testimonial.quote}
               </blockquote>
@@ -92,14 +94,17 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-24 bg-muted/50 px-24">
+    <section className="py-24 px-6 md:px-24 bg-muted text-foreground">
       <div className="container">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="text-3xl font-bold text-center mb-12 text-primary">
           Features That Set Us Apart
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => (
-            <Card key={feature.title} className="p-6">
+            <Card
+              key={feature.title}
+              className="p-6 bg-card text-card-foreground border border-border"
+            >
               <CheckCircle className="h-12 w-12 text-primary mb-4" />
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-muted-foreground">{feature.description}</p>
@@ -117,12 +122,12 @@ interface ThemeSwitcherProps {
 }
 
 const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
-  const themes: Theme[] = ["default", "purple", "green", "blue"];
+  const themes: Theme[] = ["default", "purple", "green", "blue", "red"];
 
   return (
     <div className="fixed top-4 right-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 border border-border">
       <div className="flex items-center gap-2">
-        <Palette className="h-4 w-4" />
+        <Palette className="h-4 w-4 text-foreground" />
         {themes.map((theme) => (
           <Button
             key={theme}
@@ -139,7 +144,7 @@ const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
   );
 };
 
-type Theme = "default" | "purple" | "green" | "blue";
+type Theme = "default" | "purple" | "green" | "blue" | "red";
 
 interface SaasProps {
   theme: Theme;
@@ -147,7 +152,9 @@ interface SaasProps {
 
 function Saas({ theme }: SaasProps) {
   return (
-    <section className="min-h-screen w-full">
+    <section
+      className={`min-h-screen w-full theme-${theme} bg-background text-foreground`}
+    >
       <div>
         <Hero />
         <Testimonials />

@@ -21,38 +21,15 @@ const Preview = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [previewCode, setPreviewCode] = useState<string>("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  // Add this with other state declarations
   const [previewFormat, setPreviewFormat] = useState<ExportFormat>("css");
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
-    document.documentElement.classList.remove(
-      "theme-purple",
-      "theme-green",
-      "theme-blue"
-    );
-
-    if (newTheme !== "default") {
-      document.documentElement.classList.add(`theme-${newTheme}`);
-    }
   };
 
   useEffect(() => {
     handleThemeChange(theme);
   }, []);
-
-  const getThemeValue = (theme: Theme) => {
-    switch (theme) {
-      case "purple":
-        return "300";
-      case "green":
-        return "150";
-      case "blue":
-        return "240";
-      default:
-        return "0";
-    }
-  };
 
   const handleExportCSS = () => {
     const themeColors = themeConfigs[theme];
@@ -130,7 +107,6 @@ module.exports = {
     const themeColors = themeConfigs[theme];
     const tailwindConfig = `/* Tailwind CSS v4.0 Configuration */
 @layer theme {
-  :root {
     --color-background: ${themeColors.background};
     --color-foreground: ${themeColors.foreground};
     --color-card: ${themeColors.card};
@@ -148,7 +124,6 @@ module.exports = {
     --color-border: ${themeColors.border};
     --color-input: ${themeColors.input};
     --color-ring: ${themeColors.ring};
-  }
 }
 
 @layer utilities {
@@ -235,8 +210,10 @@ module.exports = {
             isSidebarOpen ? "ml-48" : "ml-0"
           }`}
         >
-          {activePreview === "saas" && <Saas theme={theme} />}
-          {/* Add other preview components here */}
+          <div className={theme !== "default" ? `theme-${theme}` : ""}>
+            {activePreview === "saas" && <Saas theme={theme} />}
+            {/* Add other preview components here */}
+          </div>
         </div>
       </div>
 
@@ -246,12 +223,13 @@ module.exports = {
             className="fixed inset-0 bg-transparent"
             onClick={() => setIsPreviewOpen(false)}
           />
-          <div className="fixed top-[3.5rem] right-8 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50">
+          <div className="fixed top-[4rem] right-16 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
                 <Select
                   value={previewFormat}
                   onValueChange={(value: ExportFormat) => {
+                    setPreviewFormat(value);
                     handleExport(value);
                   }}
                 >
