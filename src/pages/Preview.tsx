@@ -3,12 +3,17 @@ import { ThemeSidebar, type Theme } from "@/components/ThemeSidebar";
 import Saas from "../previews/Saas";
 import { Navbar } from "@/components/Navbar";
 import { themeConfigs } from "@/lib/theme-config";
+import { Button } from "@/components/ui/button"; // Add this import
+import { Download } from "lucide-react"; // Add this import for the Download icon
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 
 const Preview = () => {
   const [theme, setTheme] = useState<Theme>("default");
   const [activePreview, setActivePreview] = useState<PreviewType>("saas");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [previewCode, setPreviewCode] = useState<string>("");
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
@@ -64,15 +69,8 @@ const Preview = () => {
       --ring: ${themeColors.ring};
     }`;
 
-    const blob = new Blob([themeCSS], { type: "text/css" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `theme-${theme}.css`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setPreviewCode(themeCSS);
+    setIsPreviewOpen(true);
   };
 
   const handleExportJSON = () => {
@@ -81,13 +79,102 @@ const Preview = () => {
       colors: themeConfigs[theme],
     };
 
-    const blob = new Blob([JSON.stringify(themeJSON, null, 2)], {
-      type: "application/json",
+    const jsonString = JSON.stringify(themeJSON, null, 2);
+    setPreviewCode(jsonString);
+    setIsPreviewOpen(true);
+  };
+
+  const handleExportTailwind = () => {
+    const themeColors = themeConfigs[theme];
+    const tailwindConfig = `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        background: "${themeColors.background}",
+        foreground: "${themeColors.foreground}",
+        card: "${themeColors.card}",
+        "card-foreground": "${themeColors.cardForeground}",
+        popover: "${themeColors.popover}",
+        "popover-foreground": "${themeColors.popoverForeground}",
+        primary: "${themeColors.primary}",
+        "primary-foreground": "${themeColors.primaryForeground}",
+        secondary: "${themeColors.secondary}",
+        "secondary-foreground": "${themeColors.secondaryForeground}",
+        muted: "${themeColors.muted}",
+        "muted-foreground": "${themeColors.mutedForeground}",
+        accent: "${themeColors.accent}",
+        "accent-foreground": "${themeColors.accentForeground}",
+        border: "${themeColors.border}",
+        input: "${themeColors.input}",
+        ring: "${themeColors.ring}",
+      }
+    }
+  }
+}`;
+
+    setPreviewCode(tailwindConfig);
+    setIsPreviewOpen(true);
+  };
+
+  const handleExportTailwind4 = () => {
+    const themeColors = themeConfigs[theme];
+    const tailwindConfig = `/* Tailwind CSS v4.0 Configuration */
+@layer theme {
+  :root {
+    --color-background: ${themeColors.background};
+    --color-foreground: ${themeColors.foreground};
+    --color-card: ${themeColors.card};
+    --color-card-foreground: ${themeColors.cardForeground};
+    --color-popover: ${themeColors.popover};
+    --color-popover-foreground: ${themeColors.popoverForeground};
+    --color-primary: ${themeColors.primary};
+    --color-primary-foreground: ${themeColors.primaryForeground};
+    --color-secondary: ${themeColors.secondary};
+    --color-secondary-foreground: ${themeColors.secondaryForeground};
+    --color-muted: ${themeColors.muted};
+    --color-muted-foreground: ${themeColors.mutedForeground};
+    --color-accent: ${themeColors.accent};
+    --color-accent-foreground: ${themeColors.accentForeground};
+    --color-border: ${themeColors.border};
+    --color-input: ${themeColors.input};
+    --color-ring: ${themeColors.ring};
+  }
+}
+
+@layer utilities {
+  .bg-background { background-color: var(--color-background); }
+  .bg-foreground { background-color: var(--color-foreground); }
+  .bg-card { background-color: var(--color-card); }
+  .bg-card-foreground { background-color: var(--color-card-foreground); }
+  .bg-popover { background-color: var(--color-popover); }
+  .bg-popover-foreground { background-color: var(--color-popover-foreground); }
+  .bg-primary { background-color: var(--color-primary); }
+  .bg-primary-foreground { background-color: var(--color-primary-foreground); }
+  .bg-secondary { background-color: var(--color-secondary); }
+  .bg-secondary-foreground { background-color: var(--color-secondary-foreground); }
+  .bg-muted { background-color: var(--color-muted); }
+  .bg-muted-foreground { background-color: var(--color-muted-foreground); }
+  .bg-accent { background-color: var(--color-accent); }
+  .bg-accent-foreground { background-color: var(--color-accent-foreground); }
+  .bg-border { background-color: var(--color-border); }
+  .bg-input { background-color: var(--color-input); }
+  .bg-ring { background-color: var(--color-ring); }
+}`;
+
+    setPreviewCode(tailwindConfig);
+    setIsPreviewOpen(true);
+  };
+
+  const handleDownload = () => {
+    const isJSON = previewCode.trim().startsWith("{");
+    const blob = new Blob([previewCode], {
+      type: isJSON ? "application/json" : "text/css",
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `theme-${theme}.json`;
+    a.download = `theme-${theme}.${isJSON ? "json" : "css"}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -103,21 +190,61 @@ const Preview = () => {
           theme={theme}
           onExportCSS={handleExportCSS}
           onExportJSON={handleExportJSON}
+          onExportTailwind={handleExportTailwind}
+          onExportTailwind4={handleExportTailwind4}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
       </div>
 
       <div className="flex pt-14">
-        <div className="fixed top-14 left-0 bottom-0 w-48">
+        <div
+          className={`fixed top-14 left-0 bottom-0 w-48 transform transition-transform duration-300 ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
           <ThemeSidebar
             currentTheme={theme}
             onThemeChange={handleThemeChange}
           />
         </div>
-        <div className="ml-48 flex-1 overflow-y-auto">
+        <div
+          className={`flex-1 overflow-y-auto transition-[margin] duration-300 ${
+            isSidebarOpen ? "ml-48" : "ml-0"
+          }`}
+        >
           {activePreview === "saas" && <Saas theme={theme} />}
           {/* Add other preview components here */}
         </div>
       </div>
+
+      {isPreviewOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-transparent"
+            onClick={() => setIsPreviewOpen(false)}
+          />
+          <div className="fixed top-[3.5rem] right-8 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-medium">Code Preview</h3>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleDownload}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+                <button
+                  onClick={() => setIsPreviewOpen(false)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+            <pre className="bg-muted/50 p-4 rounded-md overflow-x-auto max-h-[300px] overflow-y-auto text-sm">
+              <code>{previewCode}</code>
+            </pre>
+          </div>
+        </>
+      )}
     </div>
   );
 };
