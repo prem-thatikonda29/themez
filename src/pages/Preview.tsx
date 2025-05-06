@@ -31,7 +31,7 @@ const Preview = () => {
 
   useEffect(() => {
     handleThemeChange(theme);
-  }, []);
+  }, [theme]);
 
   // Listening for escape key press
   useEffect(() => {

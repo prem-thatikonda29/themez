@@ -6,10 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LogOut, Download, Menu } from "lucide-react";
+import { LogOut, Menu, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type Theme } from "./ThemeSidebar";
 import { supabase } from "@/lib/supabaseClient";
+
+import logo from "/logo.svg";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 export type ExportFormat = "css" | "json" | "tailwind" | "tailwind4";
@@ -65,7 +67,7 @@ export const Navbar = ({
           <Button variant="ghost" size="icon" onClick={onToggleSidebar}>
             <Menu className="h-5 w-5" />
           </Button>
-          <h2 className="text-lg font-semibold">Themez</h2>
+          <img src={logo} alt="logo" className="h-6 w-24 object-cover" />
           <Select
             value={activePreview}
             onValueChange={(value: PreviewType) => setActivePreview(value)}
@@ -74,16 +76,16 @@ export const Navbar = ({
               <SelectValue placeholder="Select preview" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="saas">SaaS Template</SelectItem>
-              <SelectItem value="portfolio">Portfolio Template</SelectItem>
-              <SelectItem value="e-commerce">E-commerce Template</SelectItem>
+              <SelectItem value="saas">SaaS</SelectItem>
+              <SelectItem value="e-commerce">E-commerce</SelectItem>
+              <SelectItem value="portfolio">Portfolio</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => onExport("css")}>
-            <Download className="h-4 w-4 mr-2" />
+            <Upload className="h-4 w-4 mr-2" />
             Export Theme
           </Button>
 
