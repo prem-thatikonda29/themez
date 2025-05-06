@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import EcommerceLandingPage from "@/previews/ECom";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 
@@ -212,6 +213,9 @@ module.exports = {
         >
           <div className={theme !== "default" ? `theme-${theme}` : ""}>
             {activePreview === "saas" && <Saas theme={theme} />}
+            {activePreview === "e-commerce" && (
+              <EcommerceLandingPage theme={theme} />
+            )}
             {/* Add other preview components here */}
           </div>
         </div>
