@@ -28,6 +28,7 @@ export const Navbar = ({
   onExport,
   onToggleSidebar,
 }: NavbarProps) => {
+  // use the correct type for User
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -37,6 +38,8 @@ export const Navbar = ({
         error,
       } = await supabase.auth.getUser();
       if (!error) setUser(user);
+
+      console.log(user);
     }
 
     fetchUser();
@@ -78,7 +81,7 @@ export const Navbar = ({
           {user && (
             <>
               <span className="text-sm font-semibold w-8 h-8 bg-purple-50 rounded-full flex justify-center items-center">
-                {user.email?.[0]?.toUpperCase()}
+                {user.user_metadata?.full_name?.[0].toUpperCase()}
               </span>
               <Button
                 variant="outline"
