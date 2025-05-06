@@ -1,6 +1,14 @@
 import { Palette } from "lucide-react";
 
-type Theme = "default" | "purple" | "green" | "blue" | "red";
+type Theme =
+  | "default"
+  | "purple"
+  | "green"
+  | "blue"
+  | "red"
+  | "lightpurple"
+  | "darkpurple"
+  | "purpledark";
 
 interface ThemeThumbnailProps {
   theme: Theme;
@@ -46,7 +54,16 @@ interface ThemeSidebarProps {
 }
 
 const ThemeSidebar = ({ currentTheme, onThemeChange }: ThemeSidebarProps) => {
-  const themes: Theme[] = ["default", "purple", "green", "blue", "red"];
+  const themes: Theme[] = [
+    "default",
+    "lightpurple",
+    "purple",
+    "darkpurple",
+    "purpledark",
+    "green",
+    "blue",
+    "red",
+  ];
 
   return (
     <div className="w-48 min-h-full bg-background border-r border-border p-4">
