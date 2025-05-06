@@ -12,7 +12,7 @@ import { type Theme } from "./ThemeSidebar";
 import { supabase } from "@/lib/supabaseClient";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
-type ExportFormat = "css" | "json" | "tailwind" | "tailwind4";
+export type ExportFormat = "css" | "json" | "tailwind" | "tailwind4";
 
 interface NavbarProps {
   activePreview: PreviewType;

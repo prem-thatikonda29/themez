@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-interface Theme {}
+// interface Theme {}
 
-export default function EcommerceLandingPage({ theme }: { theme: Theme }) {
+export default function EcommerceLandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const featuredProducts = [

@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeSidebar, type Theme } from "@/components/ThemeSidebar";
-import Saas from "../previews/Saas";
 import { Navbar } from "@/components/Navbar";
 import { themeConfigs } from "@/lib/theme-config";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import EcommerceLandingPage from "@/previews/ECom";
+const Saas = React.lazy(() => import("../previews/Saas"));
+const EcommerceLandingPage = React.lazy(() => import("../previews/ECom"));
+import { type ExportFormat } from "@/components/Navbar";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 
@@ -232,10 +233,16 @@ module.exports = {
           }`}
         >
           <div className={theme !== "default" ? `theme-${theme}` : ""}>
-            {activePreview === "saas" && <Saas theme={theme} />}
-            {activePreview === "e-commerce" && (
-              <EcommerceLandingPage theme={theme} />
-            )}
+            <React.Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-screen">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              }
+            >
+              {activePreview === "saas" && <Saas />}
+              {activePreview === "e-commerce" && <EcommerceLandingPage />}
+            </React.Suspense>
             {/* Add other preview components here */}
           </div>
         </div>
