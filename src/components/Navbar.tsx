@@ -28,7 +28,6 @@ export const Navbar = ({
   onExport,
   onToggleSidebar,
 }: NavbarProps) => {
-  // use the correct type for User
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -44,6 +43,20 @@ export const Navbar = ({
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "b") {
+        event.preventDefault();
+        onToggleSidebar();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [onToggleSidebar]);
 
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

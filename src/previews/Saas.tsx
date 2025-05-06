@@ -67,7 +67,7 @@ const Hero = () => {
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">
-                Join 10,000+ businesses
+                Join 1,000+ businesses
               </span>
             </div>
             <div className="flex items-center gap-x-2">
@@ -77,7 +77,7 @@ const Hero = () => {
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">
-                4.9/5 (2,000+ reviews)
+                4.8/5 (2,000+ reviews)
               </span>
             </div>
           </div>

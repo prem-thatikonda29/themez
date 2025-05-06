@@ -13,8 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import EcommerceLandingPage from "@/previews/ECom";
+import { gsap } from "gsap";
+import { Draggable } from "gsap/all";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
+
+gsap.registerPlugin(Draggable);
 
 const Preview = () => {
   const [theme, setTheme] = useState<Theme>("default");
@@ -24,6 +28,10 @@ const Preview = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewFormat, setPreviewFormat] = useState<ExportFormat>("css");
 
+  Draggable.create("#previewBox", {
+    type: "x,y",
+  });
+
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
   };
@@ -31,6 +39,20 @@ const Preview = () => {
   useEffect(() => {
     handleThemeChange(theme);
   }, []);
+
+  // Listening for escape key press
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isPreviewOpen) {
+        setIsPreviewOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPreviewOpen]);
 
   const handleExportCSS = () => {
     const themeColors = themeConfigs[theme];
@@ -233,7 +255,10 @@ module.exports = {
             className="fixed inset-0 bg-transparent"
             onClick={() => setIsPreviewOpen(false)}
           />
-          <div className="fixed top-[4rem] right-16 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50">
+          <div
+            className="fixed top-[4rem] right-16 bg-background border border-border rounded-lg shadow-lg p-4 max-w-sm w-full z-50"
+            id="previewBox"
+          >
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
                 <Select
