@@ -10,13 +10,9 @@ import {
   Users,
   Globe,
   Clock,
-  Mail,
   Phone,
-  MessageSquare,
   ArrowRight,
-  ChevronRight,
   Star,
-  BadgeCheck,
   Cloud,
   Cpu,
   Database,
@@ -699,28 +695,28 @@ interface ThemeSwitcherProps {
   onThemeChange: (theme: Theme) => void;
 }
 
-const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
-  const themes: Theme[] = ["default", "purple", "green", "blue", "red"];
+// const ThemeSwitcher = ({ currentTheme, onThemeChange }: ThemeSwitcherProps) => {
+//   const themes: Theme[] = ["default", "purple", "green", "blue", "red"];
 
-  return (
-    <div className="fixed top-4 right-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 border border-border shadow-sm">
-      <div className="flex items-center gap-2">
-        <Palette className="h-4 w-4 text-foreground" />
-        {themes.map((theme) => (
-          <Button
-            key={theme}
-            variant={currentTheme === theme ? "default" : "outline"}
-            size="sm"
-            onClick={() => onThemeChange(theme)}
-            className="capitalize"
-          >
-            {theme}
-          </Button>
-        ))}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="fixed top-4 right-4 z-50 bg-background/80 backdrop-blur-sm rounded-lg p-2 border border-border shadow-sm">
+//       <div className="flex items-center gap-2">
+//         <Palette className="h-4 w-4 text-foreground" />
+//         {themes.map((theme) => (
+//           <Button
+//             key={theme}
+//             variant={currentTheme === theme ? "default" : "outline"}
+//             size="sm"
+//             onClick={() => onThemeChange(theme)}
+//             className="capitalize"
+//           >
+//             {theme}
+//           </Button>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
 
 type Theme = "default" | "purple" | "green" | "blue" | "red";
 
@@ -728,7 +724,7 @@ interface SaasProps {
   theme: Theme;
 }
 
-function Saas({ theme }: SaasProps) {
+function Saas() {
   return (
     <div className={`min-h-screen w-full bg-background text-foreground`}>
       <div>

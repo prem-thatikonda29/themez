@@ -82,11 +82,7 @@ export const Navbar = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onExport("tailwind4")}
-          >
+          <Button variant="outline" size="sm" onClick={() => onExport("css")}>
             <Download className="h-4 w-4 mr-2" />
             Export Theme
           </Button>
