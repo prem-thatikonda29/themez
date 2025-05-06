@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -5,9 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, Menu } from "lucide-react";
+import { LogOut, Download, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type Theme } from "./ThemeSidebar";
+import { supabase } from "@/lib/supabaseClient";
 
 type PreviewType = "saas" | "portfolio" | "e-commerce";
 type ExportFormat = "css" | "json" | "tailwind" | "tailwind4";
@@ -26,6 +28,20 @@ export const Navbar = ({
   onExport,
   onToggleSidebar,
 }: NavbarProps) => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (!error) setUser(user);
+    }
+
+    fetchUser();
+  }, []);
+
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
@@ -48,6 +64,7 @@ export const Navbar = ({
             </SelectContent>
           </Select>
         </div>
+
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
@@ -57,6 +74,21 @@ export const Navbar = ({
             <Download className="h-4 w-4 mr-2" />
             Export Theme
           </Button>
+
+          {user && (
+            <>
+              <span className="text-sm font-semibold w-8 h-8 bg-purple-50 rounded-full flex justify-center items-center">
+                {user.email?.[0]?.toUpperCase()}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => supabase.auth.signOut()}
+              >
+                <LogOut className="text-red-400" />
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>
