@@ -18,6 +18,16 @@ type ThemeColors = {
   ring: string;
 };
 
+export type Theme =
+  | "default"
+  | "lightpurple"
+  | "purpledark"
+  | "darkpurple"
+  | "purple"
+  | "green"
+  | "blue"
+  | "red";
+
 export const themeConfigs: Record<Theme, ThemeColors> = {
   default: {
     background: "oklch(0.99 0 0)",

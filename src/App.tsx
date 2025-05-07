@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 import Login from "./pages/Login";
 import Preview from "./pages/Preview";
+import { Session } from "@supabase/supabase-js"; // Add this import
 
 const App = () => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<Session | null>(null); // Fix the type
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

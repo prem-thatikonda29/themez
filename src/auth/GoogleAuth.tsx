@@ -6,7 +6,8 @@ import { GoogleIcon } from "@hugeicons/core-free-icons";
 const LoginWithGoogle = () => {
   const handleLogin = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
+        // Remove unused data variable
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/preview`,
