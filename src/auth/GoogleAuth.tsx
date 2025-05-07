@@ -10,7 +10,7 @@ const LoginWithGoogle = () => {
         // Remove unused data variable
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/preview`,
+          redirectTo: `/preview`,
         },
       });
 
