@@ -1,5 +1,5 @@
 // src/components/LoginWithGoogle.js
-import { supabase } from "./lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { GoogleIcon } from "@hugeicons/core-free-icons";
 
@@ -27,7 +27,7 @@ const LoginWithGoogle = () => {
   return (
     <button
       onClick={handleLogin}
-      className="w-fit h-fit bg-blue-200 rounded-md p-4 text-md font-semibold hover:cursor-pointer"
+      className="w-fit h-fit bg-gray-100 hover:bg-gray-200 hover-transition rounded-md p-4 text-md font-semibold hover:cursor-pointer"
     >
       <HugeiconsIcon icon={GoogleIcon} />
     </button>

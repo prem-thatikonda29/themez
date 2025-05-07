@@ -34,13 +34,26 @@ export const Navbar = ({
 
   useEffect(() => {
     async function fetchUser() {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      if (!error) setUser(user);
+      try {
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
 
-      console.log(user);
+        if (error) {
+          // If we get an error (including 403), clear the session and user
+          await supabase.auth.signOut();
+          setUser(null);
+          return;
+        }
+
+        setUser(user);
+      } catch (error) {
+        // Handle any unexpected errors
+        console.error("Auth error:", error);
+        await supabase.auth.signOut();
+        setUser(null);
+      }
     }
 
     fetchUser();
@@ -89,7 +102,7 @@ export const Navbar = ({
             Export Theme
           </Button>
 
-          {user && (
+          {user ? (
             <>
               <span className="text-sm font-semibold w-8 h-8 bg-purple-50 rounded-full flex justify-center items-center">
                 {user.user_metadata?.full_name?.[0].toUpperCase()}
@@ -97,11 +110,22 @@ export const Navbar = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => supabase.auth.signOut()}
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  window.location.href = "/login";
+                }}
               >
                 <LogOut className="text-red-400" />
               </Button>
             </>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => (window.location.href = "/login")}
+            >
+              Sign In
+            </Button>
           )}
         </div>
       </div>
