@@ -1,12 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { LoginWithGoogle } from "@/auth/GoogleAuth";
 import Auth from "@/auth/EmailAuth";
+import minilogo from "@/assets/minilogo.png";
 
 const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-[400px] p-8 shadow-lg">
-        <div className="space-y-8">
+        <div className="space-y-8 flex flex-col items-center">
+          <img src={minilogo} alt="logo" className="w-16 h-16" />
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">
               Welcome to Themez
